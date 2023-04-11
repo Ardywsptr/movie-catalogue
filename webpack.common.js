@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -12,19 +13,16 @@ module.exports = {
     clean: true,
   },
   module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-        ],
-      },
-    ],
+    rules: [{
+      test: /\.css$/,
+      use: [{
+          loader: 'style-loader',
+        },
+        {
+          loader: 'css-loader',
+        },
+      ],
+    }],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -32,12 +30,15 @@ module.exports = {
       template: path.resolve(__dirname, 'src/templates/index.html'),
     }),
     new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'src/public/'),
-          to: path.resolve(__dirname, 'dist/'),
-        },
-      ],
+      patterns: [{
+        from: path.resolve(__dirname, 'src/public/'),
+        to: path.resolve(__dirname, 'dist/'),
+      }],
+    }),
+    new Dotenv({
+      path: path.resolve(__dirname, '.env'),
+      systemvars: true,
+      safe: true,
     }),
   ],
 };
